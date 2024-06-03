@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { Button, Card } from "antd";
+import { Button, Card, Modal } from "antd";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
@@ -16,38 +16,40 @@ const data: Item[] = [
   {
     title: "Ayam Serundeng",
     harga: 10000,
-    image: "/ayam.jpg",
+    image: "/img/ayam_serundeng.jpg",
   },
   {
-    title: "Ayam Goreng",
+    title: "Ayam Balado",
     harga: 12000,
-    image: "/ayam-goreng.jpg",
+    image: "/img/ayam_balado.jpg",
   },
   {
-    title: "Nasi Goreng",
+    title: "Ikan Mujair",
     harga: 15000,
-    image: "/nasi-goreng.jpg",
+    image: "/img/ikan_mujair.webp",
   },
   {
-    title: "Sate Ayam",
+    title: "Babat",
     harga: 20000,
-    image: "/sate-ayam.jpg",
+    image: "/img/babat.jpg",
   },
   {
-    title: "Sate Ayam",
-    harga: 20000,
-    image: "/sate-ayam.jpg",
+    title: "Nasi Putih",
+    harga: 5000,
+    image: "/img/nasi_putih.jpg",
   },
   {
-    title: "Sate Ayam",
-    harga: 20000,
-    image: "/sate-ayam.jpg",
+    title: "Sambal",
+    harga: 2000,
+    image: "/img/sambel.jpe",
   },
 ];
 
 export default function Menu() {
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
   const [totalCost, setTotalCost] = useState<number>(0);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [modalData, setModalData] = useState<Item[]>([]);
 
   useEffect(() => {
     const newTotalCost = selectedItems.reduce(
@@ -89,6 +91,30 @@ export default function Menu() {
     setSelectedItems(updatedItems);
   };
 
+  const handlePayClick = () => {
+    setIsModalVisible(true);
+    setModalData(selectedItems);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleWhatsAppPayment = () => {
+    const orderText = selectedItems
+      .map(
+        (item) => `${item.quantity}x ${item.title} (Rp.${item.totalHarga})`
+      )
+      .join("\n");
+    const totalHarga = totalCost;
+    const message = `Halo, saya ingin memesan dengan detail:\n${orderText}\n\nTotal Harga: Rp.${totalHarga}\nTerima kasih!`;
+    const phone = "628986081372"; // Ganti dengan nomor WhatsApp tujuan
+    const whatsappURI = `https://wa.me/${phone}?text=${encodeURIComponent(
+      message
+    )}`;
+    window.open(whatsappURI, "_blank");
+  };
+
   return (
     <div>
       <div className="flex justify-center items-center gap-4">
@@ -123,11 +149,15 @@ export default function Menu() {
         <div className="w-full h-full flex flex-col items-center">
           <p>Menu Yang Anda Pilih</p>
           <div className="flex justify-center items-center gap-3 my-3">
-            <Button>Bayar</Button>
+            <Button onClick={handlePayClick}>Bayar</Button>
+            <Button onClick={handleWhatsAppPayment}>Bayar via WhatsApp</Button>
             <p>Total: Rp.{totalCost}</p>
           </div>
           {selectedItems.map((item, index) => (
-            <div className="w-[94%] bg-red-300 my-2 flex justify-between flex-row px-10 rounded-lg p-2" key={index}>
+            <div
+              className="w-[94%] bg-red-300 my-2 flex justify-between flex-row px-10 rounded-lg p-2"
+              key={index}
+            >
               <div>
                 <p>{item.title}</p>
                 <p>Rp.{item.totalHarga}</p>
@@ -143,6 +173,24 @@ export default function Menu() {
           ))}
         </div>
       </div>
+      <Modal
+        title="Detail Pesanan"
+        visible={isModalVisible}
+        onCancel={handleModalClose}
+        footer={[
+          <Button key="close" onClick={handleModalClose}>
+            Tutup
+          </Button>,
+        ]}
+      >
+        {modalData.map((item, index) => (
+          <div key={index}>
+            <p>{item.title}</p>
+            <p>Jumlah: {item.quantity}</p>
+            <p>Total Harga: Rp.{item.totalHarga}</p>
+          </div>
+        ))}
+      </Modal>
     </div>
   );
 }
