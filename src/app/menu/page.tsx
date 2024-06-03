@@ -101,6 +101,11 @@ export default function Menu() {
   };
 
   const handleWhatsAppPayment = () => {
+    if (selectedItems.length === 0) {
+      alert("Silakan pilih makanan terlebih dahulu sebelum melakukan pembayaran.");
+      return;
+    }
+
     const orderText = selectedItems
       .map(
         (item) => `${item.quantity}x ${item.title} (Rp.${item.totalHarga})`
@@ -108,7 +113,7 @@ export default function Menu() {
       .join("\n");
     const totalHarga = totalCost;
     const message = `Halo, saya ingin memesan dengan detail:\n${orderText}\n\nTotal Harga: Rp.${totalHarga}\nTerima kasih!`;
-    const phone = "628986081372"; // Ganti dengan nomor WhatsApp tujuan
+    const phone = "628986081372"; 
     const whatsappURI = `https://wa.me/${phone}?text=${encodeURIComponent(
       message
     )}`;
@@ -149,8 +154,8 @@ export default function Menu() {
         <div className="w-full h-full flex flex-col items-center">
           <p>Menu Yang Anda Pilih</p>
           <div className="flex justify-center items-center gap-3 my-3">
-            <Button onClick={handlePayClick}>Bayar</Button>
-            <Button onClick={handleWhatsAppPayment}>Bayar via WhatsApp</Button>
+            <Button onClick={handlePayClick}>Detail Makanan</Button>
+            <Button onClick={handleWhatsAppPayment}>Bayar via WA</Button>
             <p>Total: Rp.{totalCost}</p>
           </div>
           {selectedItems.map((item, index) => (
