@@ -1,11 +1,24 @@
 "use client";
 
 import { Button, Card } from "antd";
-import Meta from "antd/es/card/Meta";
+import { Metadata } from "next";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
-const data = [
+export const metadata: Metadata = {
+    title: "Menu",
+  };
+//   
+
+interface Item {
+  title: string;
+  harga: number;
+  image: string;
+  quantity?: number;
+  totalHarga?: number;
+}
+
+const data: Item[] = [
   {
     title: "Ayam Serundeng",
     harga: 10000,
@@ -39,18 +52,18 @@ const data = [
 ];
 
 export default function Menu() {
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [totalCost, setTotalCost] = useState(0);
+  const [selectedItems, setSelectedItems] = useState<Item[]>([]);
+  const [totalCost, setTotalCost] = useState<number>(0);
 
   useEffect(() => {
     const newTotalCost = selectedItems.reduce(
-      (sum, item) => sum + item.totalHarga,
+      (sum, item) => sum + (item.totalHarga || 0),
       0
     );
     setTotalCost(newTotalCost);
   }, [selectedItems]);
 
-  const addItem = (item) => {
+  const addItem = (item: Item) => {
     const existingItemIndex = selectedItems.findIndex(
       (selectedItem) => selectedItem.title === item.title
     );
@@ -64,18 +77,18 @@ export default function Menu() {
     }
   };
 
-  const incrementItem = (index) => {
+  const incrementItem = (index: number) => {
     const updatedItems = [...selectedItems];
-    updatedItems[index].quantity += 1;
-    updatedItems[index].totalHarga += updatedItems[index].harga;
+    updatedItems[index].quantity! += 1;
+    updatedItems[index].totalHarga! += updatedItems[index].harga;
     setSelectedItems(updatedItems);
   };
 
-  const decrementItem = (index) => {
+  const decrementItem = (index: number) => {
     const updatedItems = [...selectedItems];
-    if (updatedItems[index].quantity > 1) {
-      updatedItems[index].quantity -= 1;
-      updatedItems[index].totalHarga -= updatedItems[index].harga;
+    if (updatedItems[index].quantity! > 1) {
+      updatedItems[index].quantity! -= 1;
+      updatedItems[index].totalHarga! -= updatedItems[index].harga;
     } else {
       updatedItems.splice(index, 1);
     }
