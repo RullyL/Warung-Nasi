@@ -3,6 +3,7 @@
 import Buttons from "@/app/Components/Button/Button";
 import { Button, Modal } from "antd";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 
 export default function Home() {
@@ -44,7 +45,9 @@ export default function Home() {
         <Image src="/logo.png" width={246} height={100} alt="" />
       </div>
       <div className=" flex flex-col justify-center items-center h-[51vh]">
+        <Link href='/menu'>
         <Buttons onClick={() => {}} button="Lihat Menu" />
+        </Link>
         <Buttons onClick={showModal} button="Cara Pemakaian" />
       </div>
       <Modal
