@@ -30,7 +30,7 @@ const ProductList = () => {
   const fetchProducts = async () => {
     try {
       const response = await axios.get<Product[]>(
-        "http://localhost:5000/products"
+        "https://warung-nasi.vercel.app/products"
       );
       setProducts(response.data);
     } catch (error) {
@@ -56,7 +56,7 @@ const ProductList = () => {
 
   const deleteProduct = async (productId: number) => {
     try {
-      await axios.delete(`http://localhost:5000/products/${productId}`);
+      await axios.delete(`https://warung-nasi.vercel.app/product/${productId}`);
       fetchProducts(); // Refresh product list after deletion
     } catch (error) {
       console.error("Failed to delete product:", error);

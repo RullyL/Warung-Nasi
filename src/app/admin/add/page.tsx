@@ -23,7 +23,7 @@ const AddProduct = () => {
     formData.append("file", file);
     formData.append("title", title);
     try {
-      await axios.post("http://localhost:5000/product", formData, {
+      await axios.post("https://warung-nasi.vercel.app/product", formData, {
         headers: {
           "Content-type": "multipart/form-data",
         },
