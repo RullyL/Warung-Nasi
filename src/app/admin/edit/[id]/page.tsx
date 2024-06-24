@@ -18,7 +18,7 @@ const EditProduct = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getProductById = async () => {
-    const response = await axios.get(`https://warung-nasi.vercel.app/product/${id}`);
+    const response = await axios.get(`http://localhost:5000/product/${id}`);
     setTitle(response.data.name);
     setFile(response.data.image);
     setPreview(response.data.url);
@@ -36,7 +36,7 @@ const EditProduct = () => {
     formData.append("file", file);
     formData.append("title", title);
     try {
-      await axios.patch(`https://warung-nasi.vercel.app/product/${id}`, formData, {
+      await axios.patch(`http://localhost:5000/product/${id}`, formData, {
         headers: {
           "Content-type": "multipart/form-data",
         },

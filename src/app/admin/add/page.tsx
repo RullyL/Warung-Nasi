@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -9,7 +7,7 @@ import Image from "next/image";
 
 const AddProduct = () => {
   const [title, setTitle] = useState("");
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState(null);
   const [preview, setPreview] = useState("");
   const navigate = useRouter();
 
@@ -20,20 +18,21 @@ const AddProduct = () => {
 
   const saveProduct = async () => {
     const formData = new FormData();
-    formData.append("file", file);
+    if (file) {
+      formData.append("file", file);
+    }
     formData.append("title", title);
     try {
-      await axios.post("https://warung-nasi.vercel.app/product", formData, {
+      await axios.post("https://warung-nasi.vercel.app/api/product", formData, {
         headers: {
           "Content-type": "multipart/form-data",
         },
       });
-      navigate.push("/admin/list"); // Assuming navigate is correctly imported and used
+      navigate.push("/admin/list");
     } catch (error) {
       console.log(error);
     }
   };
-
   return (
     <div className="columns is-centered mt-5">
       <div className="column is-half">
