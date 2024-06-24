@@ -1,6 +1,8 @@
+"use client";
+
 import React, { useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import {useRouter} from "next/navigation";
 import { Button, Form, Input, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Image from "next/image";
